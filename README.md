@@ -1,6 +1,6 @@
 # API
 
-<h1>Alumne login</h1>
+<h1>Student login</h1>
 
 <table class="wikitable">
 <tbody><tr>
@@ -32,7 +32,7 @@
 </td></tr>
 </tbody></table>
 
-<h1>Teacher Login</h1>
+<h1>Admin Login</h1>
 
 <table class="wikitable">
 <tbody><tr>
