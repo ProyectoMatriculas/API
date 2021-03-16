@@ -53,7 +53,7 @@ app.post('/login/student', function (req, res) {
 
 });
 
-app.post('/login/teacher', function (req, res) {
+app.post('/login/admin', function (req, res) {
 
     if (req.query.username != "" && req.query.password != "") {
  
