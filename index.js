@@ -1,3 +1,4 @@
+const port = process.env.PORT || 3000
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const app = express();
@@ -105,7 +106,7 @@ function generateToken(user) {
 
 }
 
-app.listen(3000, function () {
+app.listen(port, function () {
    
     console.log('Api funcionando...');
 
