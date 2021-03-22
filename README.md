@@ -1,6 +1,6 @@
 # API
 
-<h1>API Endpoints</h1>
+<h1>Endpoints</h1>
 
 <h2>Student login</h2>
 
