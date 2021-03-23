@@ -3,6 +3,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const app = express();
 const CryptoJS = require("crypto-js");
+const cors = require('cors');
 
 const MongoClient = require('mongodb').MongoClient;
 const mongoURL = "mongodb+srv://krysprueba:123krys@cluster0.lwvn6.mongodb.net/?retryWrites=true&w=majority";
