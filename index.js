@@ -115,7 +115,7 @@ app.get('/coursesList', function(req, res) {
     
                 if (err) throw err;
 
-                if (result != null) {
+                if (result.length > 0) {
 
                     res.status(200).send({"status":"OK","message":result});
 
