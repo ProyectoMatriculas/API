@@ -8,25 +8,16 @@ const MongoClient = require('mongodb').MongoClient;
 const mongoURL = "mongodb+srv://krysprueba:123krys@cluster0.lwvn6.mongodb.net/?retryWrites=true&w=majority";
 const mongoDB = "proyectomatriculas";
 
-var user = {
-
-    username: '',
-    password: '',
-    isAdmin: '',
-    token: ''
-
-};
-
 app.post('/login/student', function(req, res) {
         
-    if (req.query.username != undefined & req.query.password != undefined) {
+    if (req.query.email != undefined & req.query.password != undefined) {
 
         MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
 
             if (err) throw err;
     
             var dbo = db.db(mongoDB);
-            dbo.collection('usersprova').findOne({name: req.query.username}, function(err, result) {
+            dbo.collection('usersprova').findOne({name: req.query.email}, function(err, result) {
     
                 if (err) throw err;
 
@@ -65,14 +56,14 @@ app.post('/login/student', function(req, res) {
 
 app.post('/login/admin', function(req, res) {
         
-    if (req.query.username != undefined & req.query.password != undefined) {
+    if (req.query.email != undefined & req.query.password != undefined) {
 
         MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
 
             if (err) throw err;
     
             var dbo = db.db(mongoDB);
-            dbo.collection('usersprova').findOne({name: req.query.username}, function(err, result) {
+            dbo.collection('usersprova').findOne({name: req.query.email}, function(err, result) {
     
                 if (err) throw err;
 
@@ -199,6 +190,6 @@ function generateToken(user) {
 
 app.listen(port, function () {
    
-    console.log('Api funcionando en el puerto ${port} ...');
+    console.log('Api funcionando en el puerto ', port, '...');
 
 });
