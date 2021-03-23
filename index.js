@@ -9,6 +9,8 @@ const MongoClient = require('mongodb').MongoClient;
 const mongoURL = "mongodb+srv://krysprueba:123krys@cluster0.lwvn6.mongodb.net/?retryWrites=true&w=majority";
 const mongoDB = "proyectomatriculas";
 
+app.use(cors());
+
 app.post('/login/student', function(req, res) {
         
     if (req.query.email != undefined & req.query.password != undefined) {
