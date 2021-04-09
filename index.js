@@ -11,6 +11,8 @@ const mongoDB = "proyectomatriculas";
 
 app.use(cors());
 
+// LOGIN STUDENT
+
 app.post('/login/student', function(req, res) {
         
     if (req.query.email != undefined & req.query.password != undefined) {
@@ -56,6 +58,8 @@ app.post('/login/student', function(req, res) {
     }
 
 });
+
+// LOGIN ADMIN
 
 app.post('/login/admin', function(req, res) {
         
@@ -103,11 +107,13 @@ app.post('/login/admin', function(req, res) {
 
 });
 
+// GET COURSES
+
 //CFPM    AF30
 
-app.get('/coursesList', function(req, res) {
+app.get('/courses/read', function(req, res) {
 
-    if (req.query.course_code != undefined) {
+    if (req.query.id != undefined) {
 
         MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
 
@@ -154,6 +160,73 @@ app.get('/coursesList', function(req, res) {
     }
     
 });
+
+// GET STUDENTS
+
+app.get('/students/read', function(req, res) {
+
+    if (req.query.course_code != undefined) {
+
+        MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
+
+            if (err) throw err;
+    
+            var dbo = db.db(mongoDB);
+            dbo.collection('alumnos').find({CODI_CICLE_FORMATIU: req.query.course_code}).project({_id: 0, NOM_ALUMNE: 1, CODI_CICLE_FORMATIU: 1}).toArray(function(err, result) {
+    
+                if (err) throw err;
+
+                if (result.length > 0) {
+
+                    res.status(200).send({"status":"OK","message":result});
+
+                } else {
+
+                    res.status(400).send({"status":"ERROR","message:":"No hay ningun ciclo con ese codigo"});
+                }
+    
+                db.close();
+    
+            });
+    
+        });
+
+    } else if (req.query.id != undefined) {
+
+        MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
+
+            if (err) throw err;
+    
+            var dbo = db.db(mongoDB);
+            dbo.collection('cicloformativo').find({_id = req.query.id}).project({_id: 0, NOM_ALUMNE:1, NOM_CICLE_FORMATIU:1}).toArray(function(err, result) {
+    
+                if (err) throw err;
+
+                if (result != null) {
+
+                    res.status(200).send({"status":"OK","message":result});
+
+                } else {
+
+                    res.status(400).send({"status":"ERROR","message:":"No hay ningun alumno con esa ID"});
+
+                }
+    
+                db.close();
+    
+            });
+    
+        });
+
+    } else {
+
+        res.status(400).send({"status":"ERROR","message:":"Datos no introducidos."})
+
+    }
+    
+});
+
+// TOKEN
 
 function generateToken(user) {
 
