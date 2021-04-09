@@ -412,7 +412,7 @@
 </td>
 <td>JSON {field: value, ...}
 </td>
-<td>Recibe un JSON con la información del curso
+<td>Recibe un JSON con la información del alumno
   </td></tr>
 </tbody>
 </table>
@@ -443,7 +443,7 @@
 </td>
 <td>text
 </td>
-<td>OK: Devuelve el nombre del curso creado / ERROR: Descripcion del error
+<td>OK: Devuelve el nombre del alumno creado / ERROR: Descripcion del error
 </td></tr>
 </tbody>
 </table>
