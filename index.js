@@ -61,7 +61,7 @@ app.post('/login/student', function(req, res) {
 
 // LOGIN ADMIN
 
-app.post('/login/admin', function(req, res) {
+app.get('/login/admin', function(req, res) {
         
     if (req.query.email != undefined & req.query.password != undefined) {
 
@@ -198,7 +198,7 @@ app.get('/students/read', function(req, res) {
             if (err) throw err;
     
             var dbo = db.db(mongoDB);
-            dbo.collection('cicloformativo').find({_id: req.query.id}).project({_id: 0, NOM_ALUMNE:1, NOM_CICLE_FORMATIU:1}).toArray(function(err, result) {
+            dbo.collection('cicloformativo').find({_id: req.query.id}).project({_id: 0, NOM_ALUMNE:1, NOM_CICLE_FORMATIU:1}).limit(20).toArray(function(err, result) {
     
                 if (err) throw err;
 
@@ -223,6 +223,46 @@ app.get('/students/read', function(req, res) {
         res.status(400).send({"status":"ERROR","message:":"Datos no introducidos."})
 
     }
+    
+});
+
+// CREATE STUDENTS
+
+app.post('/students/create', function(req, res) {
+
+    if (req.query.csv_file != undefined) {
+
+        res.status(200).send({"status":"OK","message":"El Naberas"});
+
+    }
+
+
+    // MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
+
+    //     if (err) throw err;
+
+    //     var dbo = db.db(mongoDB);
+    //     dbo.collection('alumnos').insertOne(newStudent, function(err, result) {
+
+    //         if (err) throw err;
+
+    //         if (result != null) {
+
+    //             res.status(200).send({"status":"OK","message":result});
+
+    //         } else {
+
+    //             res.status(400).send({"status":"ERROR","message:":"No hay ningun alumno con esa ID"});
+
+    //         }
+
+    //     });
+
+    // });
+
+    // db.close();
+    
+
     
 });
 
