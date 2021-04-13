@@ -198,7 +198,7 @@ app.get('/students/read', function(req, res) {
             if (err) throw err;
     
             var dbo = db.db(mongoDB);
-            dbo.collection('cicloformativo').find({_id = req.query.id}).project({_id: 0, NOM_ALUMNE:1, NOM_CICLE_FORMATIU:1}).toArray(function(err, result) {
+            dbo.collection('cicloformativo').find({_id: req.query.id}).project({_id: 0, NOM_ALUMNE:1, NOM_CICLE_FORMATIU:1}).toArray(function(err, result) {
     
                 if (err) throw err;
 
