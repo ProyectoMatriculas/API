@@ -172,7 +172,7 @@ app.get('/students/read', function(req, res) {
             if (err) throw err;
     
             var dbo = db.db(mongoDB);
-            dbo.collection('alumnos').find({CODI_CICLE_FORMATIU: req.query.course_code}).project({_id: 0, NOM_ALUMNE: 1, CODI_CICLE_FORMATIU: 1}).toArray(function(err, result) {
+            dbo.collection('studentsprova').find({course_code: req.query.course_code}).project({_id: 0}).toArray(function(err, result) {
     
                 if (err) throw err;
 
@@ -198,7 +198,7 @@ app.get('/students/read', function(req, res) {
             if (err) throw err;
     
             var dbo = db.db(mongoDB);
-            dbo.collection('cicloformativo').find({_id: req.query.id}).project({_id: 0, NOM_ALUMNE:1, NOM_CICLE_FORMATIU:1}).limit(20).toArray(function(err, result) {
+            dbo.collection('studentsprova').findOne({ralc_id: req.query.id} , function(err, result) {
     
                 if (err) throw err;
 
