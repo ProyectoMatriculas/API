@@ -6,6 +6,7 @@ const CryptoJS = require("crypto-js");
 const cors = require('cors');
 
 const MongoClient = require('mongodb').MongoClient;
+const { Db } = require('mongodb');
 const mongoURL = "mongodb+srv://krysprueba:123krys@cluster0.lwvn6.mongodb.net/?retryWrites=true&w=majority";
 const mongoDB = "proyectomatriculas";
 
@@ -265,6 +266,39 @@ app.post('/students/create', function(req, res) {
 
     
 });
+
+// REQUERIMENTS
+
+app.post('/requirements/create', function(req, res) {
+
+    MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
+        var dbo = db.db(mongoDB);
+
+    var json = req.body;
+
+    importJsonToDB(json, "perfils");
+
+    });
+
+});
+
+// STUDENTS CSV TO ARRAY 
+
+
+// INSERT JSON TO COLLECTION
+
+function insertJsonToDB(json, collectionName) {
+
+    MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
+
+        var dbo = db.db(mongoDB);
+
+        dbo.collection(collectionName).insertOne(json), function(err, result) {
+
+            if (err) throw err;
+
+}
+
 
 // TOKEN
 
