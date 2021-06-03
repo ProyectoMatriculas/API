@@ -1,108 +1,203 @@
-const port = process.env.PORT || 3000
-const express = require('express');
-const jwt = require('jsonwebtoken');
+// Imports
+const express = require('express')
+const bodyParser = require('body-parser')
+const cors = require('cors')
+
+const { Db } = require('mongodb')
+const MongoClient = require('mongodb').MongoClient
+const CryptoJS = require("crypto-js")
+const jwt = require('jsonwebtoken')
+
+// Server instance
 const app = express();
-const CryptoJS = require("crypto-js");
-const cors = require('cors');
 
-const MongoClient = require('mongodb').MongoClient;
-const { Db } = require('mongodb');
-const mongoURL = "mongodb+srv://krysprueba:123krys@cluster0.lwvn6.mongodb.net/?retryWrites=true&w=majority";
-const mongoDB = "proyectomatriculas";
+// Global variables
+const port = process.env.PORT || 5000
+const mongoURL = 'mongodb+srv://admin:admin@cluster0.lwvn6.mongodb.net/?retryWrites=true&w=majority'
+const mongoDB = 'proyectomatriculas'
 
+
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors());
 
-// LOGIN STUDENT
+// Token
 
-app.post('/login/student', function(req, res) {
-        
-    if (req.query.email != undefined & req.query.password != undefined) {
+const secretKey = 'jwt_key'
 
-        MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
+app.use((req, res, next) => {
 
-            if (err) throw err;
-    
-            var dbo = db.db(mongoDB);
-            dbo.collection('usersprova').findOne({name: req.query.email}, function(err, result) {
-    
-                if (err) throw err;
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Headers', 'Content-Type, access-token, Access-Control-Allow-Origin')
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE')
+    res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE')
+    next()
+  
+});
 
-                if (result != null) {
+// ENDPOINTS
 
-                    if (result.password == CryptoJS.SHA256(req.query.password)) {
+app.get('/', (req, res) => {
 
-                        generateToken(result);
+    res.send('API working successfully!')
+  
+});
 
-                        res.status(200).send({"status":"OK","message":result.token});
-                        
-                    } else {
+app.get('/ifToken/showData', checkingToken, (req, res) => { 
 
-                        res.status(400).send({"status":"ERROR","message:":"Las passwords no coinciden"});
-                    }
+    const data = [
+        {
+            "id":"1",
+            "numero":1
+        },
+        {
+            "id":"2",
+            "numero":2
+        },
+        {
+            "id":"3",
+            "numero":3
+        }
+    ]
 
-                } else {
+    res.status(200).send(data)
 
-                    res.status(400).send({"status":"ERROR","message:":"No hay ningun usuario registrado con ese email"});
+})
 
-                }
-    
-                db.close();
-    
-            });
-    
-        });
+// LOGIN / USER
+
+app.post('/login/user', (req, res) => {
+
+    userEmail = req.body.email
+    userPassword = CryptoJS.SHA256(req.body.password).toString(CryptoJS.enc.Hex)
+  
+    MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
+  
+      if (err) throw err
+  
+      const db = client.db(mongoDB)
+  
+      db.collection('users').findOne({email: userEmail, password: userPassword}, {projection: {token: 0} }, function(err, user) {
+  
+        if (err) throw err
+  
+        if (user != null) {
+  
+            res.status(200).send({"token":generateToken(user, true)})
+  
+        } else {
+  
+            res.status(400).send('Invalid credentials')
+  
+        }
+  
+        client.close()
+  
+      });
+  
+    });
+  
+  });
+
+// LOGIN / ADMIN
+
+app.post('/login/admin', (req, res) => {
+
+    adminEmail = req.body.email
+    adminPassword = CryptoJS.SHA256(req.body.password).toString(CryptoJS.enc.Hex)
+  
+    MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
+  
+      if (err) throw err
+  
+      const db = client.db(mongoDB)
+  
+      db.collection('admins').findOne({email: adminEmail, password: adminPassword}, {projection: {token: 0} }, function(err, admin) {
+  
+        if (err) throw err
+  
+        if (admin != null) {
+
+            res.status(200).send({"token":generateToken(admin, true)})
+  
+        } else {
+  
+            res.status(400).send('Invalid credentials')
+  
+        }
+  
+        client.close()
+  
+      });
+  
+    });
+  
+  });
+
+// TOKEN / GENERATION
+
+function generateToken(user, isAdmin) {
+
+    if (isAdmin) {
+
+        collectionName = 'admins'
 
     } else {
 
-        res.status(400).send({"status":"ERROR","message:":"No se ha introducido email y password."})
+        collectionName = 'users'
 
     }
 
-});
+    token = jwt.sign(user, secretKey, { expiresIn: '5m' })
 
-// LOGIN ADMIN
+    MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
 
-app.get('/login/admin', function(req, res) {
-        
-    if (req.query.email != undefined & req.query.password != undefined) {
+        if (err) throw err
 
-        MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
+        const db = client.db(mongoDB)
 
-            if (err) throw err;
+        db.collection(collectionName).updateOne({ email: user.email }, { $set: {token: token} }, {projection: {password: 0} }, function(err, user) {
+
+            if (err) throw err
+            
+            client.close()
+
+        });
+
+    });
     
-            var dbo = db.db(mongoDB);
-            dbo.collection('usersprova').findOne({name: req.query.email}, function(err, result) {
-    
-                if (err) throw err;
+    return token
 
-                if (result != null) {
+}
 
-                    if (result.password == CryptoJS.SHA256(req.query.password)) {
+// TOKEN / CHECKING
 
-                        generateToken(result);
+const checkingToken = express.Router()
 
-                        res.status(200).send({"status":"OK","message":result.token});
-                        
-                    } else {
+checkingToken.use((req, res, next) => {
 
-                        res.status(400).send({"status":"ERROR","message:":"Las passwords no coinciden"});
-                    }
+    const token = req.headers['access-token']
 
-                } else {
+    if (token) {
 
-                    res.status(400).send({"status":"ERROR","message:":"No hay ningun usuario registrado con ese email"});
+        jwt.verify(token, secretKey, (err, decoded) => { 
 
-                }
-    
-                db.close();
-    
-            });
-    
+            if (err) {
+                
+                res.send('Invalid token')
+
+            }
+
+            req.decoded = decoded
+            
+            next()
+
         });
 
     } else {
 
-        res.status(400).send({"status":"ERROR","message:":"No se ha introducido email y password."})
+        res.send('Invalid token')
 
     }
 
@@ -112,234 +207,159 @@ app.get('/login/admin', function(req, res) {
 
 //CFPM    AF30
 
-app.get('/courses/read', function(req, res) {
+// app.get('/courses/read', function(req, res) {
 
-    if (req.query.id != undefined) {
+//     if (req.query.id != undefined) {
 
-        MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
+//         MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
 
-            if (err) throw err;
+//             if (err) throw err;
     
-            var dbo = db.db(mongoDB);
-            dbo.collection('cicloformativo').find({CODI_CICLE_FORMATIU: req.query.course_code}).project({_id: 0, NOM_MODUL: 1, NOM_UNITAT_FORMATIVA: 1}).toArray(function(err, result) {
+//             var dbo = db.db(mongoDB);
+//             dbo.collection('cicloformativo').find({CODI_CICLE_FORMATIU: req.query.course_code}).project({_id: 0, NOM_MODUL: 1, NOM_UNITAT_FORMATIVA: 1}).toArray(function(err, result) {
     
-                if (err) throw err;
+//                 if (err) throw err;
 
-                if (result.length > 0) {
+//                 if (result.length > 0) {
 
-                    res.status(200).send({"status":"OK","message":result});
+//                     res.status(200).send({"status":"OK","message":result});
 
-                } else {
+//                 } else {
 
-                    res.status(400).send({"status":"ERROR","message:":"No hay ningun ciclo con ese codigo"})
-                }
+//                     res.status(400).send({"status":"ERROR","message:":"No hay ningun ciclo con ese codigo"})
+//                 }
     
-                db.close();
+//                 db.close();
     
-            });
+//             });
     
-        });
+//         });
 
-    } else {
+//     } else {
 
-        MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
+//         MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
 
-            if (err) throw err;
+//             if (err) throw err;
     
-            var dbo = db.db(mongoDB);
-            dbo.collection('cicloformativo').find({}).project({_id: 0, CODI_CICLE_FORMATIU: 1, NOM_CICLE_FORMATIU: 1}).toArray(function(err, result) {
+//             var dbo = db.db(mongoDB);
+//             dbo.collection('cicloformativo').find({}).project({_id: 0, CODI_CICLE_FORMATIU: 1, NOM_CICLE_FORMATIU: 1}).toArray(function(err, result) {
     
-                if (err) throw err;
+//                 if (err) throw err;
     
-                res.status(200).send({"status":"OK","message":result});
-                db.close();
+//                 res.status(200).send({"status":"OK","message":result});
+//                 db.close();
     
-            });
+//             });
     
-        });
+//         });
 
-    }
+//     }
     
-});
+// });
 
 // GET STUDENTS
 
-app.get('/students/read', function(req, res) {
+// app.get('/students/read', function(req, res) {
 
-    if (req.query.course_code != undefined) {
+//     if (req.query.course_code != undefined) {
 
-        MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
+//         MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
 
-            if (err) throw err;
+//             if (err) throw err;
     
-            var dbo = db.db(mongoDB);
-            dbo.collection('studentsprova').find({course_code: req.query.course_code}).project({_id: 0}).toArray(function(err, result) {
+//             var dbo = db.db(mongoDB);
+//             dbo.collection('studentsprova').find({course_code: req.query.course_code}).project({_id: 0}).toArray(function(err, result) {
     
-                if (err) throw err;
+//                 if (err) throw err;
 
-                if (result.length > 0) {
+//                 if (result.length > 0) {
 
-                    res.status(200).send({"status":"OK","message":result});
+//                     res.status(200).send({"status":"OK","message":result});
 
-                } else {
+//                 } else {
 
-                    res.status(400).send({"status":"ERROR","message:":"No hay ningun ciclo con ese codigo"});
-                }
+//                     res.status(400).send({"status":"ERROR","message:":"No hay ningun ciclo con ese codigo"});
+//                 }
     
-                db.close();
+//                 db.close();
     
-            });
+//             });
     
-        });
+//         });
 
-    } else if (req.query.id != undefined) {
+//     } else if (req.query.id != undefined) {
 
-        MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
+//         MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
 
-            if (err) throw err;
+//             if (err) throw err;
     
-            var dbo = db.db(mongoDB);
-            dbo.collection('studentsprova').findOne({ralc_id: req.query.id} , function(err, result) {
+//             var dbo = db.db(mongoDB);
+//             dbo.collection('studentsprova').findOne({ralc_id: req.query.id} , function(err, result) {
     
-                if (err) throw err;
+//                 if (err) throw err;
 
-                if (result != null) {
+//                 if (result != null) {
 
-                    res.status(200).send({"status":"OK","message":result});
+//                     res.status(200).send({"status":"OK","message":result});
 
-                } else {
+//                 } else {
 
-                    res.status(400).send({"status":"ERROR","message:":"No hay ningun alumno con esa ID"});
+//                     res.status(400).send({"status":"ERROR","message:":"No hay ningun alumno con esa ID"});
 
-                }
+//                 }
     
-                db.close();
+//                 db.close();
     
-            });
+//             });
     
-        });
+//         });
 
-    } else {
+//     } else {
 
-        res.status(400).send({"status":"ERROR","message:":"Datos no introducidos."})
+//         res.status(400).send({"status":"ERROR","message:":"Datos no introducidos."})
 
-    }
+//     }
     
-});
-
-// CREATE STUDENTS
-
-app.post('/students/create', function(req, res) {
-
-    if (req.query.csv_file != undefined) {
-
-        res.status(200).send({"status":"OK","message":"El Naberas"});
-
-    }
-
-
-    // MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
-
-    //     if (err) throw err;
-
-    //     var dbo = db.db(mongoDB);
-    //     dbo.collection('alumnos').insertOne(newStudent, function(err, result) {
-
-    //         if (err) throw err;
-
-    //         if (result != null) {
-
-    //             res.status(200).send({"status":"OK","message":result});
-
-    //         } else {
-
-    //             res.status(400).send({"status":"ERROR","message:":"No hay ningun alumno con esa ID"});
-
-    //         }
-
-    //     });
-
-    // });
-
-    // db.close();
-    
-
-    
-});
+// });
 
 // REQUERIMENTS
 
-app.post('/requirements/create', function(req, res) {
+// app.post('/requirements/create', function(req, res) {
 
-    MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
-        var dbo = db.db(mongoDB);
+//     MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
+//         var dbo = db.db(mongoDB);
 
-    var json = req.body;
+//     var json = req.body;
 
-    importJsonToDB(json, "perfils");
+//     importJsonToDB(json, "perfils");
 
-    });
+//     });
 
-});
+// });
 
 // STUDENTS CSV TO ARRAY 
 
 
 // INSERT JSON TO COLLECTION
 
-function insertJsonToDB(json, collectionName) {
+// function insertJsonToDB(json, collectionName) {
 
-    MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
+//     MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
 
-        var dbo = db.db(mongoDB);
+//         var dbo = db.db(mongoDB);
 
-        dbo.collection(collectionName).insertOne(json), function(err, result) {
+//         dbo.collection(collectionName).insertOne(json), function(err, result) {
 
-            if (err) throw err;
+//             if (err) throw err;
 
-}
+//         }
 
+//     });
 
-// TOKEN
-
-function generateToken(user) {
-
-    secretkey = '';
-
-    console.log('User is admin? ', user.isAdmin);
-
-    if (user.isAdmin) {
-
-        secretkey = '123admin';
-
-    } else {
-
-        secretkey = '123student';
-
-    }
-
-    user.token = jwt.sign(user, secretkey, { expiresIn: 3600 });
-
-    MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
-
-        if (err) throw err;
-
-        var dbo = db.db(mongoDB);
-        dbo.collection('usersprova').updateOne({ name: user.username }, { $set: {token: user.token} }, function(err, result) {
-
-            if (err) throw err;
-
-            console.log("Token actualizado");
-            db.close();
-
-        });
-
-    });
-
-}
+// }
 
 app.listen(port, function () {
    
-    console.log('Api funcionando en el puerto ', port, '...');
+    console.log('Api listening at port ', port, '...');
 
 });

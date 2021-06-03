@@ -1,28 +1,29 @@
 {
-  "name": "api-prova",
+  "name": "api-matriculas",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/ProyectoMatriculas/API.git"
+    "url": "git+ssh://git@github.com/imkrysis/MatriculasAPI.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ProyectoMatriculas/API/issues"
+    "url": "https://github.com/imkrysis/MatriculasAPI/issues"
   },
-  "homepage": "https://github.com/ProyectoMatriculas/API#readme",
+  "homepage": "https://github.com/imkrysis/MatriculasAPI#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "crypto-js": "^4.0.0",
+    "ejs": "^3.1.6",
     "express": "^4.17.1",
-    "jquery-csv": "^1.0.11",
     "jsonwebtoken": "^8.5.1",
-    "mongodb": "^3.6.4",
-    "mongoose": "^5.12.0"
+    "mongodb": "^3.6.6",
+    "nodemon": "^2.0.7"
   }
 }
