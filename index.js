@@ -16,8 +16,6 @@ const port = process.env.PORT || 5000
 const mongoURL = 'mongodb+srv://admin:admin@cluster0.lwvn6.mongodb.net/?retryWrites=true&w=majority'
 const mongoDB = 'proyectomatriculas'
 
-
-
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors());
@@ -44,28 +42,7 @@ app.get('/', (req, res) => {
   
 });
 
-app.get('/ifToken/showData', checkingToken, (req, res) => { 
-
-    const data = [
-        {
-            "id":"1",
-            "numero":1
-        },
-        {
-            "id":"2",
-            "numero":2
-        },
-        {
-            "id":"3",
-            "numero":3
-        }
-    ]
-
-    res.status(200).send(data)
-
-})
-
-// LOGIN / USER
+// Login / User
 
 app.post('/login/user', (req, res) => {
 
@@ -84,7 +61,7 @@ app.post('/login/user', (req, res) => {
   
         if (user != null) {
   
-            res.status(200).send({"token":generateToken(user, true)})
+            res.status(200).send(generateToken(user, true))
   
         } else {
   
@@ -100,7 +77,7 @@ app.post('/login/user', (req, res) => {
   
   });
 
-// LOGIN / ADMIN
+// Login / Admin
 
 app.post('/login/admin', (req, res) => {
 
@@ -119,7 +96,7 @@ app.post('/login/admin', (req, res) => {
   
         if (admin != null) {
 
-            res.status(200).send({"token":generateToken(admin, true)})
+            res.status(200).send(generateToken(admin, true))
   
         } else {
   
@@ -135,7 +112,7 @@ app.post('/login/admin', (req, res) => {
   
   });
 
-// TOKEN / GENERATION
+// Token / Generation
 
 function generateToken(user, isAdmin) {
 
@@ -157,7 +134,7 @@ function generateToken(user, isAdmin) {
 
         const db = client.db(mongoDB)
 
-        db.collection(collectionName).updateOne({ email: user.email }, { $set: {token: token} }, {projection: {password: 0} }, function(err, user) {
+        db.collection(collectionName).updateOne({ email: user.email }, { $set: {token: token} } , function(err) {
 
             if (err) throw err
             
@@ -171,7 +148,7 @@ function generateToken(user, isAdmin) {
 
 }
 
-// TOKEN / CHECKING
+// Token / Checking
 
 const checkingToken = express.Router()
 
@@ -185,7 +162,7 @@ checkingToken.use((req, res, next) => {
 
             if (err) {
                 
-                res.send('Invalid token')
+                res.status(400).send('Invalid token')
 
             }
 
@@ -197,11 +174,114 @@ checkingToken.use((req, res, next) => {
 
     } else {
 
-        res.send('Invalid token')
+        res.status(400).send('Invalid token')
 
     }
 
 });
+
+// Token / Test Endpoint
+
+app.get('/ifToken/showData', checkingToken, (req, res) => { 
+
+    const data = [
+        {
+            "id":"1",
+            "numero":1
+        },
+        {
+            "id":"2",
+            "numero":2
+        },
+        {
+            "id":"3",
+            "numero":3
+        }
+    ]
+
+    res.status(200).send(data)
+
+})
+
+// Courses
+
+// Insert courses list
+
+app.post('/courses/create', checkingToken, (req, res) => {
+
+    coursesList = req.body
+
+    MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
+
+        if (err) throw err
+    
+        const db = client.db(mongoDB)
+    
+        db.collection('courses').insert(coursesList, function(err) {
+  
+            if (err) throw err
+            
+            res.status(200).send('Courses inserted successfully')
+    
+            client.close() 
+    
+        });  
+    
+      });
+
+})
+
+app.get('/courses/getAll', checkingToken, (req, res) => {
+
+    MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
+
+        if (err) throw err
+    
+        const db = client.db(mongoDB)
+    
+        db.collection('courses').find().toArray(function(err, courses) {
+    
+          if (err) throw err
+    
+          res.status(200).send(courses)
+
+          client.close()
+    
+        });
+    
+      });
+
+})
+
+app.get('/courses/getByCode', checkingToken, (req, res) => {
+
+    MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
+
+        if (err) throw err
+    
+        const db = client.db(mongoDB)
+    
+        db.collection('courses').findOne({CODI_CICLE_FORMATIU: req.query.code}, function(err, course) {
+  
+            if (err) throw err
+      
+            if (course != null) {
+    
+                res.status(200).send(course)
+      
+            } else {
+      
+                res.status(400).send('There is no course with that ID')
+      
+            }
+      
+            client.close()
+      
+        });
+    
+    });
+
+})
 
 // GET COURSES
 
