@@ -231,6 +231,8 @@ app.post('/courses/create', checkingToken, (req, res) => {
 
 })
 
+// Get all courses
+
 app.get('/courses/getAll', checkingToken, (req, res) => {
 
     MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
@@ -252,6 +254,8 @@ app.get('/courses/getAll', checkingToken, (req, res) => {
       });
 
 })
+
+// Get an specific course by code
 
 app.get('/courses/getByCode', checkingToken, (req, res) => {
 
@@ -283,124 +287,95 @@ app.get('/courses/getByCode', checkingToken, (req, res) => {
 
 })
 
-// GET COURSES
+// Students
 
-//CFPM    AF30
+// Insert students list
 
-// app.get('/courses/read', function(req, res) {
+app.post('/students/create', checkingToken, (req, res) => {
 
-//     if (req.query.id != undefined) {
+    studentsList = req.body
 
-//         MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
+    MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
 
-//             if (err) throw err;
+        if (err) throw err
     
-//             var dbo = db.db(mongoDB);
-//             dbo.collection('cicloformativo').find({CODI_CICLE_FORMATIU: req.query.course_code}).project({_id: 0, NOM_MODUL: 1, NOM_UNITAT_FORMATIVA: 1}).toArray(function(err, result) {
+        const db = client.db(mongoDB)
     
-//                 if (err) throw err;
-
-//                 if (result.length > 0) {
-
-//                     res.status(200).send({"status":"OK","message":result});
-
-//                 } else {
-
-//                     res.status(400).send({"status":"ERROR","message:":"No hay ningun ciclo con ese codigo"})
-//                 }
+        db.collection('students').insert(studentsList, function(err) {
+  
+            if (err) throw err
+            
+            res.status(200).send('Students inserted successfully')
     
-//                 db.close();
+            client.close() 
     
-//             });
+        });  
     
-//         });
+      });
 
-//     } else {
+})
 
-//         MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
+// Get a list of students by course code
 
-//             if (err) throw err;
+app.get('/students/getByCourseCode', checkingToken, (req, res) => {
+
+    MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
+
+        if (err) throw err
     
-//             var dbo = db.db(mongoDB);
-//             dbo.collection('cicloformativo').find({}).project({_id: 0, CODI_CICLE_FORMATIU: 1, NOM_CICLE_FORMATIU: 1}).toArray(function(err, result) {
+        const db = client.db(mongoDB)
     
-//                 if (err) throw err;
+        db.collection('students').find({codi_ensenyament_P1: req.query.code}).toArray(function(err, students) {
+  
+            if (err) throw err
+      
+            if (students != null) {
     
-//                 res.status(200).send({"status":"OK","message":result});
-//                 db.close();
+                res.status(200).send(students)
+      
+            } else {
+      
+                res.status(400).send('Students not found')
+      
+            }
+      
+            client.close()
+      
+        });
     
-//             });
+    });
+
+})
+
+app.get('/students/getByRALC', checkingToken, (req, res) => {
+
+    MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
+
+        if (err) throw err
     
-//         });
-
-//     }
+        const db = client.db(mongoDB)
     
-// });
-
-// GET STUDENTS
-
-// app.get('/students/read', function(req, res) {
-
-//     if (req.query.course_code != undefined) {
-
-//         MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
-
-//             if (err) throw err;
+        db.collection('students').findOne({identficacio_RALC: req.query.ralc}, function(err, student) {
+  
+            if (err) throw err
+      
+            if (student != null) {
     
-//             var dbo = db.db(mongoDB);
-//             dbo.collection('studentsprova').find({course_code: req.query.course_code}).project({_id: 0}).toArray(function(err, result) {
+                res.status(200).send(student)
+      
+            } else {
+      
+                res.status(400).send('Student not found with that RALC.')
+      
+            }
+      
+            client.close()
+      
+        });
     
-//                 if (err) throw err;
+    });
 
-//                 if (result.length > 0) {
-
-//                     res.status(200).send({"status":"OK","message":result});
-
-//                 } else {
-
-//                     res.status(400).send({"status":"ERROR","message:":"No hay ningun ciclo con ese codigo"});
-//                 }
-    
-//                 db.close();
-    
-//             });
-    
-//         });
-
-//     } else if (req.query.id != undefined) {
-
-//         MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
-
-//             if (err) throw err;
-    
-//             var dbo = db.db(mongoDB);
-//             dbo.collection('studentsprova').findOne({ralc_id: req.query.id} , function(err, result) {
-    
-//                 if (err) throw err;
-
-//                 if (result != null) {
-
-//                     res.status(200).send({"status":"OK","message":result});
-
-//                 } else {
-
-//                     res.status(400).send({"status":"ERROR","message:":"No hay ningun alumno con esa ID"});
-
-//                 }
-    
-//                 db.close();
-    
-//             });
-    
-//         });
-
-//     } else {
-
-//         res.status(400).send({"status":"ERROR","message:":"Datos no introducidos."})
-
-//     }
-    
-// });
+})
 
 // REQUERIMENTS
 
@@ -416,27 +391,6 @@ app.get('/courses/getByCode', checkingToken, (req, res) => {
 //     });
 
 // });
-
-// STUDENTS CSV TO ARRAY 
-
-
-// INSERT JSON TO COLLECTION
-
-// function insertJsonToDB(json, collectionName) {
-
-//     MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
-
-//         var dbo = db.db(mongoDB);
-
-//         dbo.collection(collectionName).insertOne(json), function(err, result) {
-
-//             if (err) throw err;
-
-//         }
-
-//     });
-
-// }
 
 app.listen(port, function () {
    
