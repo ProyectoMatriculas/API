@@ -16,8 +16,8 @@ const port = process.env.PORT || 5000
 const mongoURL = 'mongodb+srv://admin:admin@cluster0.lwvn6.mongodb.net/?retryWrites=true&w=majority'
 const mongoDB = 'proyectomatriculas'
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({ extended: true }, {limit: '50mb'}));
 app.use(cors());
 
 // Token
@@ -278,7 +278,7 @@ app.get('/courses/getByCode', checkingToken, (req, res) => {
     
         const db = client.db(mongoDB)
     
-        db.collection('courses').findOne({CODI_CICLE_FORMATIU: req.query.code}, function(err, course) {
+        db.collection('courses').findOne({CODI_CICLE_FORMATIU: req.query.Code}, function(err, course) {
   
             if (err) throw err
       
@@ -374,7 +374,7 @@ app.get('/students/getByCourseCode', checkingToken, (req, res) => {
     
         const db = client.db(mongoDB)
     
-        db.collection('students').find({codi_ensenyament_P1: req.query.code}).toArray(function(err, students) {
+        db.collection('students').find({codi_ensenyament_P1: req.query.CourseCode}).toArray(function(err, students) {
   
             if (err) throw err
       
@@ -404,7 +404,7 @@ app.get('/students/getByRALC', checkingToken, (req, res) => {
     
         const db = client.db(mongoDB)
     
-        db.collection('students').findOne({identficacio_RALC: req.query.ralc}, function(err, student) {
+        db.collection('students').findOne({identficacio_RALC: req.query.RALC}, function(err, student) {
   
             if (err) throw err
       
