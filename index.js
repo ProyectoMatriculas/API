@@ -9,7 +9,7 @@ const CryptoJS = require("crypto-js")
 const jwt = require('jsonwebtoken')
 
 // Server instance
-const app = express();
+const app = express()
 
 // Global variables
 const port = process.env.PORT || 5000
@@ -32,7 +32,7 @@ app.use((req, res, next) => {
     res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE')
     next()
   
-});
+})
 
 // ENDPOINTS
 
@@ -40,14 +40,14 @@ app.get('/', (req, res) => {
 
     res.send('API working successfully!')
   
-});
+})
 
-// Login / User
+// Login / Student
 
-app.post('/login/user', (req, res) => {
+app.post('/login/student', (req, res) => {
 
-    userEmail = req.body.email
-    userPassword = CryptoJS.SHA256(req.body.password).toString(CryptoJS.enc.Hex)
+    studentEmail = req.body.email
+    studentPassword = CryptoJS.SHA256(req.body.password).toString(CryptoJS.enc.Hex)
   
     MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
   
@@ -55,13 +55,13 @@ app.post('/login/user', (req, res) => {
   
       const db = client.db(mongoDB)
   
-      db.collection('users').findOne({email: userEmail, password: userPassword}, {projection: {token: 0} }, function(err, user) {
+      db.collection('students').findOne({email: studentEmail, password: studentPassword}, {projection: {token: 0} }, function(err, student) {
   
         if (err) throw err
   
-        if (user != null) {
+        if (student != null) {
   
-            res.status(200).send(generateToken(user, true))
+            res.status(200).send(generateToken(student, true))
   
         } else {
   
@@ -71,11 +71,11 @@ app.post('/login/user', (req, res) => {
   
         client.close()
   
-      });
+      })
   
-    });
+    })
   
-  });
+  })
 
 // Login / Admin
 
@@ -106,11 +106,11 @@ app.post('/login/admin', (req, res) => {
   
         client.close()
   
-      });
+      })
   
-    });
+    })
   
-  });
+  })
 
 // Token / Generation
 
@@ -122,11 +122,11 @@ function generateToken(user, isAdmin) {
 
     } else {
 
-        collectionName = 'users'
+        collectionName = 'students'
 
     }
 
-    token = jwt.sign(user, secretKey, { expiresIn: '5m' })
+    token = jwt.sign(user, secretKey, { expiresIn: '1h' })
 
     MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
 
@@ -140,9 +140,9 @@ function generateToken(user, isAdmin) {
             
             client.close()
 
-        });
+        })
 
-    });
+    })
     
     return token
 
@@ -170,36 +170,13 @@ checkingToken.use((req, res, next) => {
             
             next()
 
-        });
+        })
 
     } else {
 
         res.status(400).send('Invalid token')
 
     }
-
-});
-
-// Token / Test Endpoint
-
-app.get('/ifToken/showData', checkingToken, (req, res) => { 
-
-    const data = [
-        {
-            "id":"1",
-            "numero":1
-        },
-        {
-            "id":"2",
-            "numero":2
-        },
-        {
-            "id":"3",
-            "numero":3
-        }
-    ]
-
-    res.status(200).send(data)
 
 })
 
@@ -209,25 +186,61 @@ app.get('/ifToken/showData', checkingToken, (req, res) => {
 
 app.post('/courses/create', checkingToken, (req, res) => {
 
-    coursesList = req.body
+    newCoursesList = req.body
 
     MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
 
         if (err) throw err
     
         const db = client.db(mongoDB)
+
+        db.collection('courses').find().toArray(function(err, courses) {
     
-        db.collection('courses').insert(coursesList, function(err) {
-  
             if (err) throw err
-            
-            res.status(200).send('Courses inserted successfully')
+      
+            if (courses != null) {
+
+                for (i = 0; i < newCoursesList.length; i++) {
+          
+                    for (j = 0; j < courses.length; j++) {
+          
+                        if (newCoursesList[i].CODI_CICLE_FORMATIU == courses[j].CODI_CICLE_FORMATIU) {
+
+                            newCoursesList.splice(i, 1)
+
+                            i--
+
+                            break
+
+                        }
+                    
+                    }
+                    
+                }
+
+                if (newCoursesList.length > 0) {
+
+                    db.collection('courses').insert(newCoursesList, function(err) {
+  
+                        if (err) throw err
     
-            client.close() 
+                        res.status(200).send("Courses inserted successfully!")
     
-        });  
+                        client.close()
+                              
+                    })
+
+                } else {
+
+                    res.status(400).send("No courses inserted")
+
+                }
+
+            }
+      
+        })
     
-      });
+    })
 
 })
 
@@ -249,9 +262,9 @@ app.get('/courses/getAll', checkingToken, (req, res) => {
 
           client.close()
     
-        });
+        })
     
-      });
+    })
 
 })
 
@@ -281,9 +294,9 @@ app.get('/courses/getByCode', checkingToken, (req, res) => {
       
             client.close()
       
-        });
+        })
     
-    });
+    })
 
 })
 
@@ -293,25 +306,61 @@ app.get('/courses/getByCode', checkingToken, (req, res) => {
 
 app.post('/students/create', checkingToken, (req, res) => {
 
-    studentsList = req.body
+    newStudentsList = req.body
 
     MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
 
         if (err) throw err
     
         const db = client.db(mongoDB)
+
+        db.collection('students').find().toArray(function(err, students) {
     
-        db.collection('students').insert(studentsList, function(err) {
-  
             if (err) throw err
-            
-            res.status(200).send('Students inserted successfully')
+      
+            if (students != null) {
+
+                for (i = 0; i < newStudentsList.length; i++) {
+          
+                    for (j = 0; j < students.length; j++) {
+          
+                        if (newStudentsList[i].identficacio_RALC == students[j].identficacio_RALC) {
+
+                            newStudentsList.splice(i, 1)
+
+                            i--
+
+                            break
+
+                        }
+                    
+                    }
+                    
+                }
+
+                if (newStudentsList.length > 0) {
+
+                    db.collection('students').insert(newStudentsList, function(err) {
+  
+                        if (err) throw err
     
-            client.close() 
+                        res.status(200).send("Students inserted successfully!")
     
-        });  
+                        client.close()
+                              
+                    })
+
+                } else {
+
+                    res.status(400).send("No students inserted")
+
+                }
+
+            }
+
+        })
     
-      });
+    })
 
 })
 
@@ -341,9 +390,9 @@ app.get('/students/getByCourseCode', checkingToken, (req, res) => {
       
             client.close()
       
-        });
+        })
     
-    });
+    })
 
 })
 
@@ -371,9 +420,9 @@ app.get('/students/getByRALC', checkingToken, (req, res) => {
       
             client.close()
       
-        });
+        })
     
-    });
+    })
 
 })
 
@@ -396,4 +445,4 @@ app.listen(port, function () {
    
     console.log('Api listening at port ', port, '...');
 
-});
+})
