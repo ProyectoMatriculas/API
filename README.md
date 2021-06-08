@@ -249,6 +249,118 @@
         </tr>
     </table>
     <br>
+    <h3>Course Get by code</h3>
+    <h4>REQUEST</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Request: URLQuery</th>
+        </tr>
+        <tr>
+            <th colspan="5">GET /courses/create</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>CODI_CICLE_FORMATIU</td>
+            <td>text</td>
+            <td colspan="3">Codigo del ciclo</td>
+        </tr>
+    </table>
+    <br>
+    <h4>RESPONSE STATUS 200</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Response: JSON</th>
+        </tr>
+        <tr>
+            <th colspan="5">GET /courses/getByCode</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>course</td>
+            <td>json</td>
+            <td colspan="3">Objeto curso JSON</td>
+        </tr>
+    </table>
+    <br>
+    <h3>Course Get by code</h3>
+    <h4>REQUEST</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Request: URLQuery</th>
+        </tr>
+        <tr>
+            <th colspan="5">GET /courses/create</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>CODI_CICLE_FORMATIU</td>
+            <td>text</td>
+            <td colspan="3">Codigo del ciclo</td>
+        </tr>
+    </table>
+    <br>
+    <h4>RESPONSE STATUS 200</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Response: JSON</th>
+        </tr>
+        <tr>
+            <th colspan="5">GET /courses/getByCode</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>course</td>
+            <td>json</td>
+            <td colspan="3">Objeto curso JSON</td>
+        </tr>
+    </table>
+    <br>
+    <h4>RESPONSE  STATUS 400</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Response: JSON</th>
+        </tr>
+        <tr>
+            <th colspan="5">GET /courses/getAll</th>
+        </tr>
+    </table>
+    <br>
+    <h4>RESPONSE  STATUS 400</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Response: JSON</th>
+        </tr>
+        <tr>
+            <th colspan="5">GET /courses/getAll</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>courses</td>
+            <td>Array</td>
+            <td colspan="3">Lista de objetos de curso</td>
+        </tr>
+    </table>
+    <br>
     <h2>CRUD Students</h2>
     <p>Endpoints dirigidos a gestionar los Alumnos mediante la BBDD, lectura, escritura, actualización y eliminación.
     <h3>Create Students</h3>
