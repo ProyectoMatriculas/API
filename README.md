@@ -136,3 +136,282 @@
         </tr>
     </table>
     <br>
+    <h2>CRUD Courses</h2>
+    <p>Endpoints dirigidos a gestionar los Cursos mediante la BBDD, lectura, escritura, actualización y eliminación.
+    <h3>Create Courses</h3>
+    <h4>REQUEST</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Request: JSON(body)</th>
+        </tr>
+        <tr>
+            <th colspan="5">POST /courses/create</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>CODI_CICLE_FORMATIU</td>
+            <td>text</td>
+            <td colspan="3">Codigo del ciclo</td>
+        </tr>
+        <tr>
+            <td>NOM_CICLE_FORMATIU</td>
+            <td>text</td>
+            <td colspan="3">Nombre del ciclo</td>
+        </tr>
+        <tr>
+            <td>CODI_ADAPTACIO_CURRICULAR</td>
+            <td>text</td>
+            <td colspan="3">Codigo de adaptacion curricular</td>
+        </tr>
+        <tr>
+            <td>HORES_CICLE_FORMATIU</td>
+            <td>int</td>
+            <td colspan="3">Horas de duracion del ciclo</td>
+        </tr>
+    <tr>
+            <td>DATA_INICI_CICLE_FORMATIU</td>
+            <td>date</td>
+            <td colspan="3">Horas de duracion del ciclo</td>
+        </tr>
+    <tr>
+            <td>DATA_FI_CICLE_FORMATIU</td>
+            <td>date</td>
+            <td colspan="3">Horas de duracion del ciclo</td>
+        </tr>
+     <tr>
+            <td>MODULS_CICLE_FORMATIU</td>
+            <td>Array</td>
+            <td colspan="3">Lista de modulos del ciclo</td>
+        </tr>
+    <tr>
+            <td>INDICADOR_FCT</td>
+            <td>text</td>
+            <td colspan="3">S / N referente a SI / NO</td>
+        </tr>
+    <tr>
+            <td>INDICADOR_SINTESIS</td>
+            <td>text</td>
+            <td colspan="3">S / N referente a SI / NO</td>
+        </tr>
+    <tr>
+            <td>INDICADOR_IDIOMA</td>
+            <td>text</td>
+            <td colspan="3">S / N referente a SI / NO</td>
+        </tr>
+    <tr>
+            <td>INDICADOR_PROJECTE</td>
+            <td>text</td>
+            <td colspan="3">S / N referente a SI / NO</td>
+        </tr>
+    </table>
+    <br>
+    <h4>RESPONSE STATUS 200</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Response: JSON</th>
+        </tr>
+        <tr>
+            <th colspan="5">POST /courses/create</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>Message</td>
+            <td>text</td>
+            <td colspan="3">Mensaje afirmativo</td>
+        </tr>
+    </table>
+    <br>
+    <h4>RESPONSE  STATUS 400</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Response: JSON</th>
+        </tr>
+        <tr>
+            <th colspan="5">POST /courses/create</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>Message</td>
+            <td>text</td>
+            <td colspan="3">Mensaje de error</td>
+        </tr>
+    </table>
+    <br>
+    <h2>CRUD Students</h2>
+    <p>Endpoints dirigidos a gestionar los Alumnos mediante la BBDD, lectura, escritura, actualización y eliminación.
+    <h3>Create Students</h3>
+    <h4>REQUEST</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Request: JSON(body)</th>
+        </tr>
+        <tr>
+            <th colspan="5">POST /students/create</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>codi_solicitud</td>
+            <td>text</td>
+            <td colspan="3">Codigo de la solicitud</td>
+        </tr>
+        <tr>
+            <td>estat_solicitud</td>
+            <td>text</td>
+            <td colspan="3">Informacion sobre si esta la matricula validada o no</td>
+        </tr>
+        <tr>
+            <td>nom</td>
+            <td>text</td>
+            <td colspan="3">Nombre del alumno</td>
+        </tr>
+        <tr>
+            <td>primer_cognom</td>
+            <td>text</td>
+            <td colspan="3">Primer apellido del almumno</td>
+        </tr>
+    <tr>
+            <td>segon_cognom</td>
+            <td>text</td>
+            <td colspan="3">Segundo apellido del alumno</td>
+        </tr>
+    <tr>
+            <td>codi_centre_P1</td>
+            <td>text</td>
+            <td colspan="3">Codigo de centro al que postula</td>
+        </tr>
+     <tr>
+            <td>codi_ensenyament_P1</td>
+            <td>text</td>
+            <td colspan="3">Codigo de ciclo</td>
+        </tr>
+    </table>
+    <br>
+    <h4>RESPONSE STATUS 200</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Response: JSON</th>
+        </tr>
+        <tr>
+            <th colspan="5">POST /students/create</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>Message</td>
+            <td>text</td>
+            <td colspan="3">Mensaje afirmativo</td>
+        </tr>
+    </table>
+    <br>
+    <h4>RESPONSE  STATUS 400</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Response: JSON</th>
+        </tr>
+        <tr>
+            <th colspan="5">POST /students/create</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>Message</td>
+            <td>text</td>
+            <td colspan="3">Mensaje de error</td>
+        </tr>
+    </table>
+    <br>
+     <h2>CRUD Requirements</h2>
+    <p>Endpoints dirigidos a gestionar los Perfiles de Requerimiento mediante la BBDD, lectura, escritura, actualización y eliminación.
+  <h3>Create Requirements Profile</h3>
+    <h4>REQUEST</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Request: JSON(body)</th>
+        </tr>
+        <tr>
+            <th colspan="5">POST /requirements/create</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>nom</td>
+            <td>text</td>
+            <td colspan="3">Nombre del perfil</td>
+        </tr>
+        <tr>
+            <td>descripcio</td>
+            <td>text</td>
+            <td colspan="3">Descripcion del perfil</td>
+        </tr>
+        <tr>
+            <td>requisits</td>
+            <td>Array</td>
+            <td colspan="3">Lista de requisitos</td>
+        </tr>
+    </table>
+    <br>
+    <h4>RESPONSE STATUS 200</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Response: JSON</th>
+        </tr>
+        <tr>
+            <th colspan="5">POST /requirements/create</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>Message</td>
+            <td>text</td>
+            <td colspan="3">Mensaje afirmativo</td>
+        </tr>
+    </table>
+    <br>
+    <h4>RESPONSE  STATUS 400</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Response: JSON</th>
+        </tr>
+        <tr>
+            <th colspan="5">POST /requirements/create</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>Message</td>
+            <td>text</td>
+            <td colspan="3">Mensaje de error</td>
+        </tr>
+    </table>
+    <br>
