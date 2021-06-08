@@ -430,7 +430,7 @@ app.get('/students/getByRALC', checkingToken, (req, res) => {
 
 // Insert requeriment
 
-app.post('/requirements/create', function(req, res) {
+app.post('/requirements/create', checkingToken, function(req, res) {
 
     MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
 
@@ -458,11 +458,7 @@ app.post('/requirements/create', function(req, res) {
 
             }
 
-            if (found) {
-
-                
-
-            } else {
+            if (!found) {
 
                 db.collection('requeriments').insert(req.body, function(err) {
   
