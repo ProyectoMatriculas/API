@@ -290,14 +290,13 @@
         </tr>
     </table>
     <br>
-    <h3>Course Get by code</h3>
-    <h4>REQUEST</h4>
+    <h4>RESPONSE  STATUS 400</h4>
     <table style="width:100%">
         <tr>
-            <th colspan="5">Request: URLQuery</th>
+            <th colspan="5">Response: JSON</th>
         </tr>
         <tr>
-            <th colspan="5">GET /courses/create</th>
+            <th colspan="5">GET /courses/getAll</th>
         </tr>
         <tr>
             <th>Param</th>
@@ -305,59 +304,9 @@
             <th colspan="3">Description</th>
         </tr>
         <tr>
-            <td>CODI_CICLE_FORMATIU</td>
+            <td>message</td>
             <td>text</td>
-            <td colspan="3">Codigo del ciclo</td>
-        </tr>
-    </table>
-    <br>
-    <h4>RESPONSE STATUS 200</h4>
-    <table style="width:100%">
-        <tr>
-            <th colspan="5">Response: JSON</th>
-        </tr>
-        <tr>
-            <th colspan="5">GET /courses/getByCode</th>
-        </tr>
-        <tr>
-            <th>Param</th>
-            <th>Value</th>
-            <th colspan="3">Description</th>
-        </tr>
-        <tr>
-            <td>course</td>
-            <td>json</td>
-            <td colspan="3">Objeto curso JSON</td>
-        </tr>
-    </table>
-    <br>
-    <h4>RESPONSE  STATUS 400</h4>
-    <table style="width:100%">
-        <tr>
-            <th colspan="5">Response: JSON</th>
-        </tr>
-        <tr>
-            <th colspan="5">GET /courses/getAll</th>
-        </tr>
-    </table>
-    <br>
-    <h4>RESPONSE  STATUS 400</h4>
-    <table style="width:100%">
-        <tr>
-            <th colspan="5">Response: JSON</th>
-        </tr>
-        <tr>
-            <th colspan="5">GET /courses/getAll</th>
-        </tr>
-        <tr>
-            <th>Param</th>
-            <th>Value</th>
-            <th colspan="3">Description</th>
-        </tr>
-        <tr>
-            <td>courses</td>
-            <td>Array</td>
-            <td colspan="3">Lista de objetos de curso</td>
+            <td colspan="3">Mensaje informativo de error</td>
         </tr>
     </table>
     <br>
