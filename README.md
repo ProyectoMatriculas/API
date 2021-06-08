@@ -256,7 +256,7 @@
             <th colspan="5">Request: URLQuery</th>
         </tr>
         <tr>
-            <th colspan="5">GET /courses/create</th>
+            <th colspan="5">GET /courses/getByCode</th>
         </tr>
         <tr>
             <th>Param</th>
