@@ -296,7 +296,7 @@
             <th colspan="5">Response: JSON</th>
         </tr>
         <tr>
-            <th colspan="5">GET /courses/getAll</th>
+            <th colspan="5">GET /courses/getByCode</th>
         </tr>
         <tr>
             <th>Param</th>
