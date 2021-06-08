@@ -342,3 +342,76 @@
         </tr>
     </table>
     <br>
+     <h2>CRUD Requirements</h2>
+    <p>Endpoints dirigidos a gestionar los Perfiles de Requerimiento mediante la BBDD, lectura, escritura, actualización y eliminación.
+  <h3>Create Requirements Profile</h3>
+    <h4>REQUEST</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Request: JSON(body)</th>
+        </tr>
+        <tr>
+            <th colspan="5">POST /requirements/create</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>nom</td>
+            <td>text</td>
+            <td colspan="3">Nombre del perfil</td>
+        </tr>
+        <tr>
+            <td>descripcio</td>
+            <td>text</td>
+            <td colspan="3">Descripcion del perfil</td>
+        </tr>
+        <tr>
+            <td>requisits</td>
+            <td>Array</td>
+            <td colspan="3">Lista de requisitos</td>
+        </tr>
+    </table>
+    <br>
+    <h4>RESPONSE STATUS 200</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Response: JSON</th>
+        </tr>
+        <tr>
+            <th colspan="5">POST /requirements/create</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>Message</td>
+            <td>text</td>
+            <td colspan="3">Mensaje afirmativo</td>
+        </tr>
+    </table>
+    <br>
+    <h4>RESPONSE  STATUS 400</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Response: JSON</th>
+        </tr>
+        <tr>
+            <th colspan="5">POST /requirements/create</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>Message</td>
+            <td>text</td>
+            <td colspan="3">Mensaje de error</td>
+        </tr>
+    </table>
+    <br>
