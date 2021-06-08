@@ -1,649 +1,138 @@
-# API
-
-<h1>Endpoints</h1>
-
-<h2>Student login</h2>
-
-<table>
-<tbody><tr>
-<th colspan="3">Request : JSON
-</th></tr>
-<tr>
-<th colspan="3">POST /login/student
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th></tr>
-<tr>
-<td>username
-</td>
-<td>text
-</td>
-<td>Nombre usuario
-</td></tr>
-<tr>
-<td>password
-</td>
-<td>text
-</td>
-<td>Contraseña usuario
-</td></tr>
-</tbody>
-</table>
-
-<table>
-<tbody><tr>
-<th colspan="3">Response : JSON
-</th></tr>
-<tr>
-<th colspan="3">POST /login/student
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th></tr>
-<tr>
-<td>status
-</td>
-<td>OK / ERROR
-</td>
-<td>Estado de la consulta
-</td></tr>
-<tr>
-<td>message
-</td>
-<td>text
-</td>
-<td>OK: Devuelve el token / ERROR: Descripcion del error
-</td></tr>
-</tbody>
-</table>
-
-
-<h2>Admin Login</h2>
-
-<table>
-<tbody><tr>
-<th colspan="3">Request&nbsp;: JSON
-</th></tr>
-<tr>
-<th colspan="3">POST /login/admin
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th></tr>
-<tr>
-<td>username
-</td>
-<td>text
-</td>
-<td>Nombre del usuario
-</td></tr>
-<tr>
-<td>password
-</td>
-<td>text
-</td>
-<td>Contraseña del usuario
-</td></tr>
-</tbody></table>
-
-<table>
-<tbody><tr>
-<th colspan="3">Response : JSON
-</th></tr>
-<tr>
-<th colspan="3">POST /login/admin
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th></tr>
-<tr>
-<td>status
-</td>
-<td>OK / ERROR
-</td>
-<td>Estado de la consulta
-</td></tr>
-<tr>
-<td>message
-</td>
-<td>text
-</td>
-<td>OK: Devuelve el token / ERROR: Descripcion del error
-</td></tr>
-</tbody>
-</table>
-
-<h2>CRUD Courses</h2>
-
-<h3>Create</h3>
-
-<table>
-<tbody><tr>
-<th colspan="3">Request : JSON
-</th></tr>
-<tr>
-<th colspan="3">POST /courses/create
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th></tr>
-<tr>
-<td>course
-</td>
-<td>JSON {field: value, ...}
-</td>
-<td>Recibe un JSON con la información del curso
-  </td></tr>
-</tbody>
-</table>
-
-<table>
-<tbody><tr>
-<th colspan="3">Response : JSON
-</th></tr>
-<tr>
-<th colspan="3">POST /courses/create
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th></tr>
-<tr>
-<td>status
-</td>
-<td>OK / ERROR
-</td>
-<td>Estado de la consulta
-</td></tr>
-<tr>
-<td>message
-</td>
-<td>text
-</td>
-<td>OK: Devuelve el nombre del curso creado / ERROR: Descripcion del error
-</td></tr>
-</tbody>
-</table>
-
-<h3>Read</h3>
-
-<table>
-<tbody><tr>
-<th colspan="3">Request : JSON
-</th></tr>
-<tr>
-<th colspan="3">GET /courses/read
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th>
-</tr>
-<tr>
-<td>id
-</td>
-<td>Integer
-</td>
-<td>Recibe la ID del curso a leer
-</tr>
-<tr>
-<td>limit
-</td>
-<td>Integer
-</td>
-<td>Recibe el numero de cursos que quiere seleccionar
-  </td></tr>
-  <td>query
-</td>
-<td>JSON {field: value, ...}
-</td>
-<td>Recibe el filtro para la query de los cursos que quiere seleccionar
-  </td></tr>
-</tbody>
-</table>
-
-<table>
-<tbody><tr>
-<th colspan="3">Response : JSON
-</th></tr>
-<tr>
-<th colspan="3">GET /courses/read
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th></tr>
-<tr>
-<td>status
-</td>
-<td>OK / ERROR
-</td>
-<td>Estado de la consulta
-</td></tr>
-<tr>
-<td>message
-</td>
-<td>JSON {field: value, ...}
-</td>
-<td>OK: Devuelve el curso / lista de cursos / ERROR: Descripcion del error
-</td></tr>
-</tbody>
-</table>
-
-<h3>Update</h3>
-
-<table>
-<tbody><tr>
-<th colspan="3">Request : JSON
-</th></tr>
-<tr>
-<th colspan="3">POST /courses/update
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th>
-</tr>
-<tr>
-<td>id
-</td>
-<td>Integer
-</td>
-<td>Recibe la ID del curso a actualizar
-</tr>
-<tr>
-<td>values
-</td>
-<td>JSON {field: value, ...}
-</td>
-<td>Recibe los nuevos datos para el curso
-  </td></tr>
-  <td>query
-</td>
-<td>JSON {field: value, ...}
-</td>
-<td>Recibe el filtro para la query de los cursos que quiere seleccionar
-  </td></tr>
-</tbody>
-</table>
-
-<table>
-<tbody><tr>
-<th colspan="3">Response : JSON
-</th></tr>
-<tr>
-<th colspan="3">POST /courses/update
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th></tr>
-<tr>
-<td>status
-</td>
-<td>OK / ERROR
-</td>
-<td>Estado de la consulta
-</td></tr>
-<tr>
-<td>message
-</td>
-<td>JSON {field: value, ...}
-</td>
-<td>OK: Devuelve el curso actualizado / ERROR: Descripcion del error
-</td></tr>
-</tbody>
-</table>
-
-<h3>Delete</h3>
-
-<table>
-<tbody><tr>
-<th colspan="3">Request : JSON
-</th></tr>
-<tr>
-<th colspan="3">DELETE /courses/delete
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th>
-</tr>
-<tr>
-<td>id
-</td>
-<td>Integer
-</td>
-<td>Recibe la ID del curso a eliminar
-</tr>
-</tbody>
-</table>
-
-<table>
-<tbody><tr>
-<th colspan="3">Response : JSON
-</th></tr>
-<tr>
-<th colspan="3">DELETE /courses/delete
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th></tr>
-<tr>
-<td>status
-</td>
-<td>OK / ERROR
-</td>
-<td>Estado de la consulta
-</td></tr>
-<tr>
-<td>message
-</td>
-<td>text
-</td>
-<td>OK: Devuelve true / ERROR: Descripcion del error
-</td></tr>
-</tbody>
-</table>
-
-<h2>CRUD Students</h2>
-
-<h3>Create</h3>
-
-<table>
-<tbody><tr>
-<th colspan="3">Request : JSON
-</th></tr>
-<tr>
-<th colspan="3">POST /students/create
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th></tr>
-<tr>
-<td>student
-</td>
-<td>JSON {field: value, ...}
-</td>
-<td>Recibe un JSON con la información del alumno
-  </td></tr>
-</tbody>
-</table>
-
-<table>
-<tbody><tr>
-<th colspan="3">Response : JSON
-</th></tr>
-<tr>
-<th colspan="3">POST /students/create
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th></tr>
-<tr>
-<td>status
-</td>
-<td>OK / ERROR
-</td>
-<td>Estado de la consulta
-</td></tr>
-<tr>
-<td>message
-</td>
-<td>text
-</td>
-<td>OK: Devuelve el nombre del alumno creado / ERROR: Descripcion del error
-</td></tr>
-</tbody>
-</table>
-
-<h3>Read</h3>
-
-<table>
-<tbody><tr>
-<th colspan="3">Request : JSON
-</th></tr>
-<tr>
-<th colspan="3">GET /students/read
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th>
-</tr>
-<tr>
-<td>id
-</td>
-<td>Integer
-</td>
-<td>Recibe la ID del alumno a leer
-</tr>
-<tr>
-<td>limit
-</td>
-<td>Integer
-</td>
-<td>Recibe el numero de alumnos que quiere seleccionar
-  </td></tr>
-  <td>query
-</td>
-<td>JSON {field: value, ...}
-</td>
-<td>Recibe el filtro para la query de los alumnos que quiere seleccionar
-  </td></tr>
-</tbody>
-</table>
-
-<table>
-<tbody><tr>
-<th colspan="3">Response : JSON
-</th></tr>
-<tr>
-<th colspan="3">GET /students/read
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th></tr>
-<tr>
-<td>status
-</td>
-<td>OK / ERROR
-</td>
-<td>Estado de la consulta
-</td></tr>
-<tr>
-<td>message
-</td>
-<td>JSON {field: value, ...}
-</td>
-<td>OK: Devuelve el alumno / lista de alumnos / ERROR: Descripcion del error
-</td></tr>
-</tbody>
-</table>
-
-<h3>Update</h3>
-
-<table>
-<tbody><tr>
-<th colspan="3">Request : JSON
-</th></tr>
-<tr>
-<th colspan="3">POST /students/update
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th>
-</tr>
-<tr>
-<td>id
-</td>
-<td>Integer
-</td>
-<td>Recibe la ID del alumno a actualizar
-</tr>
-<tr>
-<td>values
-</td>
-<td>JSON {field: value, ...}
-</td>
-<td>Recibe los nuevos datos para el alumno
-  </td></tr>
-  <td>query
-</td>
-<td>JSON {field: value, ...}
-</td>
-<td>Recibe el filtro para la query de los alumnos que quiere seleccionar
-  </td></tr>
-</tbody>
-</table>
-
-<table>
-<tbody><tr>
-<th colspan="3">Response : JSON
-</th></tr>
-<tr>
-<th colspan="3">POST /students/update
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th></tr>
-<tr>
-<td>status
-</td>
-<td>OK / ERROR
-</td>
-<td>Estado de la consulta
-</td></tr>
-<tr>
-<td>message
-</td>
-<td>JSON {field: value, ...}
-</td>
-<td>OK: Devuelve el curso actualizado / ERROR: Descripcion del error
-</td></tr>
-</tbody>
-</table>
-
-<h3>Delete</h3>
-
-<table>
-<tbody><tr>
-<th colspan="3">Request : JSON
-</th></tr>
-<tr>
-<th colspan="3">DELETE /students/delete
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th>
-</tr>
-<tr>
-<td>id
-</td>
-<td>Integer
-</td>
-<td>Recibe la ID del alumno a eliminar
-</tr>
-</tbody>
-</table>
-
-<table>
-<tbody><tr>
-<th colspan="3">Response : JSON
-</th></tr>
-<tr>
-<th colspan="3">DELETE /students/delete
-</th></tr>
-<tr>
-<th>Param
-</th>
-<th>Values
-</th>
-<th>Description
-</th></tr>
-<tr>
-<td>status
-</td>
-<td>OK / ERROR
-</td>
-<td>Estado de la consulta
-</td></tr>
-<tr>
-<td>message
-</td>
-<td>text
-</td>
-<td>OK: Devuelve true / ERROR: Descripcion del error
-</td></tr>
-</tbody>
-</table>
+<h1>API DOCUMENTATION:</h1>
+    Las URLs de los endpoints se construyen de la siguiente manera:
+    <br>
+    <b>https://matriculas-api.herokuapp.com</b> {endpoint}
+    <h2>LOGIN</h2>
+    <p>Endpoints dirigidos a controlar los logins, tanto de usuarios (APP) como de administradores (DESKTOP)
+    <h3>User Login</h3>
+    <h4>REQUEST</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Request: JSON(body)</th>
+        </tr>
+        <tr>
+            <th colspan="5">POST /login/student</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>email</td>
+            <td>text</td>
+            <td colspan="3">User email</td>
+        </tr>
+        <tr>
+            <td>password</td>
+            <td>text</td>
+            <td colspan="3">User password</td>
+        </tr>
+    </table>
+    <br>
+    <h4>RESPONSE STATUS 200</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Response: JSON</th>
+        </tr>
+        <tr>
+            <th colspan="5">POST /login/student</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>token</td>
+            <td>text</td>
+            <td colspan="3">It returns the user session token</td>
+        </tr>
+    </table>
+    <br>
+    <h4>RESPONSE  STATUS 400</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Response: JSON</th>
+        </tr>
+        <tr>
+            <th colspan="5">POST /login/student</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>Message</td>
+            <td>text</td>
+            <td colspan="3">Error message</td>
+        </tr>
+    </table>
+    <br>
+    <h3>Admin Login</h3>
+   <h4>REQUEST</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Request: JSON(body)</th>
+        </tr>
+        <tr>
+            <th colspan="5">POST /login/admin</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>email</td>
+            <td>text</td>
+            <td colspan="3">Admin email</td>
+        </tr>
+        <tr>
+            <td>password</td>
+            <td>text</td>
+            <td colspan="3">Admin password</td>
+        </tr>
+    </table>
+    <br>
+    <h4>RESPONSE STATUS 200</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Response: JSON</th>
+        </tr>
+        <tr>
+            <th colspan="5">POST /login/admin</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>token</td>
+            <td>text</td>
+            <td colspan="3">It returns the admin session token</td>
+        </tr>
+    </table>
+    <br>
+    <h4>RESPONSE  STATUS 400</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Response: JSON</th>
+        </tr>
+        <tr>
+            <th colspan="5">POST /login/admin</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>Message</td>
+            <td>text</td>
+            <td colspan="3">Error message</td>
+        </tr>
+    </table>
+    <br>
