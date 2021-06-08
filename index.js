@@ -442,6 +442,8 @@ app.post('/requirements/create', checkingToken, function(req, res) {
 
             if (err) throw err
 
+            found = false
+
             if (requeriments != null) {
 
                 for (i = 0; i < requeriments.length; i++) {
