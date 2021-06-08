@@ -61,7 +61,7 @@ app.post('/login/student', (req, res) => {
   
         if (student != null) {
   
-            res.status(200).send(generateToken(student, true))
+            res.status(200).send(generateToken(student, false))
   
         } else {
   
@@ -426,20 +426,61 @@ app.get('/students/getByRALC', checkingToken, (req, res) => {
 
 })
 
-// REQUERIMENTS
+// Requeriments
 
-// app.post('/requirements/create', function(req, res) {
+// Insert requeriment
 
-//     MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
-//         var dbo = db.db(mongoDB);
+app.post('/requirements/create', function(req, res) {
 
-//     var json = req.body;
+    MongoClient.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
 
-//     importJsonToDB(json, "perfils");
+        if (err) throw err
+    
+        const db = client.db(mongoDB)
 
-//     });
+        db.collection('requeriments').find().toArray(function(err, requeriments) {
 
-// });
+            if (err) throw err
+
+            if (requeriments != null) {
+
+                for (i = 0; i < requeriments.length; i++) {
+
+                    if (requeriments[i].nom == req.body.nom) {
+
+                        found = true
+
+                        res.status(400).send("There is already a requirement profile with that name")
+
+                    }
+                    
+                }
+
+            }
+
+            if (found) {
+
+                
+
+            } else {
+
+                db.collection('requeriments').insert(req.body, function(err) {
+  
+                    if (err) throw err
+            
+                    res.status(200).send("Requeriment inserted successfully!")
+            
+                    client.close()
+              
+                })
+
+            }
+
+        })
+    
+    })
+
+});
 
 app.listen(port, function () {
    
