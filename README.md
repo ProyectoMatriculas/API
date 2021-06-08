@@ -403,6 +403,67 @@
         </tr>
     </table>
     <br>
+    <h3>Student Get by CourseCode</h3>
+    <h4>REQUEST</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Request: URLQuery</th>
+        </tr>
+        <tr>
+            <th colspan="5">GET /students/getByCourseCode</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>CourseCode</td>
+            <td>text</td>
+            <td colspan="3">Codigo del ciclo</td>
+        </tr>
+    </table>
+    <br>
+    <h4>RESPONSE STATUS 200</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Response: JSON</th>
+        </tr>
+        <tr>
+            <th colspan="5">GET /students/getByCourseCode</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>student</td>
+            <td>json</td>
+            <td colspan="3">Objeto student JSON</td>
+        </tr>
+    </table>
+    <br>
+    <h4>RESPONSE  STATUS 400</h4>
+    <table style="width:100%">
+        <tr>
+            <th colspan="5">Response: JSON</th>
+        </tr>
+        <tr>
+            <th colspan="5">GET /students/getByCourseCode</th>
+        </tr>
+        <tr>
+            <th>Param</th>
+            <th>Value</th>
+            <th colspan="3">Description</th>
+        </tr>
+        <tr>
+            <td>message</td>
+            <td>text</td>
+            <td colspan="3">Mensaje informativo de error</td>
+        </tr>
+    </table>
+    <br>
      <h2>CRUD Requirements</h2>
     <p>Endpoints dirigidos a gestionar los Perfiles de Requerimiento mediante la BBDD, lectura, escritura, actualización y eliminación.
   <h3>Create Requirements Profile</h3>
